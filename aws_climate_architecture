@@ -1,0 +1,30 @@
+digraph "AWS Climate Architecture" {
+	graph [fontcolor="#2D3436" fontname="Sans-Serif" fontsize=15 label="AWS Climate Architecture" nodesep=0.60 pad=2.0 rankdir=TB ranksep=0.75 splines=ortho]
+	node [fixedsize=true fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13 height=1.4 imagescale=true labelloc=b shape=box style=rounded width=1.4]
+	edge [color="#7B8894"]
+	a10f94e00f6c4cc48a9b4e592d75612e [label="Data Storage
+Stores climate datasets" height=2.3 image="E:\Desktop\Ai\ML Project\.venv1\Lib\site-packages\resources/aws/storage\simple-storage-service-s3.png" shape=none]
+	bee30336c53d4b8993c04e39f0fecf24 [label="Data Processing
+& Model Training
+Trains RNN/LSTM" height=2.7 image="E:\Desktop\Ai\ML Project\.venv1\Lib\site-packages\resources/aws/ml\sagemaker.png" shape=none]
+	d592bf67b3b54bbf9512ff99574b2438 [label="Model Deployment
+Deploys model" height=2.3 image="E:\Desktop\Ai\ML Project\.venv1\Lib\site-packages\resources/aws/compute\lambda.png" shape=none]
+	"06be0379936344fe8c2301da32cfbc35" [label="Backend API
+Handles requests" height=2.3 image="E:\Desktop\Ai\ML Project\.venv1\Lib\site-packages\resources/aws/network\api-gateway.png" shape=none]
+	"0051d603cfbd4eb5bfc6c68dd8252e32" [label="Static Hosting" height=1.9 image="E:\Desktop\Ai\ML Project\.venv1\Lib\site-packages\resources/aws/storage\simple-storage-service-s3.png" shape=none]
+	"24b20081efcb453f9b4409da6bea376d" [label=CDN height=1.9 image="E:\Desktop\Ai\ML Project\.venv1\Lib\site-packages\resources/aws/network\cloudfront.png" shape=none]
+	f7a2b83ba762413e804baf01feebfc31 [label="Historical Data
+Past climate trends" height=2.3 image="E:\Desktop\Ai\ML Project\.venv1\Lib\site-packages\resources/aws/database\dynamodb.png" shape=none]
+	"363498dcf0a747ee9a3e2ce6e83b1c77" [label="Security & Access
+Manages permissions" height=2.3 image="E:\Desktop\Ai\ML Project\.venv1\Lib\site-packages\resources/aws/security\identity-and-access-management-iam.png" shape=none]
+	a10f94e00f6c4cc48a9b4e592d75612e -> bee30336c53d4b8993c04e39f0fecf24 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	bee30336c53d4b8993c04e39f0fecf24 -> d592bf67b3b54bbf9512ff99574b2438 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d592bf67b3b54bbf9512ff99574b2438 -> "06be0379936344fe8c2301da32cfbc35" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"0051d603cfbd4eb5bfc6c68dd8252e32" -> "06be0379936344fe8c2301da32cfbc35" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"24b20081efcb453f9b4409da6bea376d" -> "06be0379936344fe8c2301da32cfbc35" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	f7a2b83ba762413e804baf01feebfc31 -> bee30336c53d4b8993c04e39f0fecf24 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"363498dcf0a747ee9a3e2ce6e83b1c77" -> a10f94e00f6c4cc48a9b4e592d75612e [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"363498dcf0a747ee9a3e2ce6e83b1c77" -> bee30336c53d4b8993c04e39f0fecf24 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"363498dcf0a747ee9a3e2ce6e83b1c77" -> d592bf67b3b54bbf9512ff99574b2438 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"363498dcf0a747ee9a3e2ce6e83b1c77" -> "06be0379936344fe8c2301da32cfbc35" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+}

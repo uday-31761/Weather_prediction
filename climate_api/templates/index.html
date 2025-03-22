@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Climate Prediction</title>
+</head>
+<body>
+    <h2>Predict Climate Trends</h2>
+    <form action="/predict" method="POST">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br><br>
+
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" required><br><br>
+
+        <label for="model">Model:</label>
+        <select id="model" name="model">
+            <option value="lstm">LSTM</option>
+            <option value="rnn">RNN</option>
+        </select><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html>
