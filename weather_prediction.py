@@ -55,8 +55,26 @@ X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=
 train_generator = TimeseriesGenerator(X_train, y_train, length=SEQ_LENGTH, batch_size=32)
 test_generator = TimeseriesGenerator(X_test, y_test, length=SEQ_LENGTH, batch_size=32)
 
-# Build RNN & LSTM Model
-model = Sequential([
+# Build RNN Model
+rnn_model = Sequential([
+    SimpleRNN(64, activation='relu', return_sequences=True, input_shape=(SEQ_LENGTH, X_train.shape[1])),
+    Dropout(0.2),
+    SimpleRNN(32, activation='relu'),
+    Dropout(0.2),
+    Dense(1)
+])
+
+rnn_model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+rnn_model.summary()
+
+# Train RNN Model
+rnn_history = rnn_model.fit(train_generator, epochs=30, validation_data=test_generator)
+
+# Save RNN Model
+rnn_model.save("climate_rnn_model.h5")
+
+# Build LSTM Model
+lstm_model = Sequential([
     LSTM(64, activation='relu', return_sequences=True, input_shape=(SEQ_LENGTH, X_train.shape[1])),
     Dropout(0.2),
     LSTM(32, activation='relu'),
@@ -64,23 +82,37 @@ model = Sequential([
     Dense(1)
 ])
 
-model.compile(optimizer='adam', loss='mse', metrics=['mae'])
-model.summary()
+lstm_model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+lstm_model.summary()
 
-# Train Model
-history = model.fit(train_generator, epochs=30, validation_data=test_generator)
+# Train LSTM Model
+lstm_history = lstm_model.fit(train_generator, epochs=30, validation_data=test_generator)
 
 # Plot Loss and Accuracy
 plt.figure(figsize=(10, 5))
-plt.plot(history.history['loss'], label='Train Loss')
-plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.plot(lstm_history.history['loss'], label='LSTM Train Loss')
+plt.plot(lstm_history.history['val_loss'], label='LSTM Validation Loss')
+plt.plot(rnn_history.history['loss'], label='RNN Train Loss', linestyle='dashed')
+plt.plot(rnn_history.history['val_loss'], label='RNN Validation Loss', linestyle='dashed')
 plt.legend()
 plt.title('Loss Over Epochs')
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
-plt.savefig("training_loss.png")
+plt.savefig("training_loss_comparison.png")
 plt.close()
 
-# Save Model
-model.save("climate_lstm_model.h5")
-print("Model training complete and saved as 'climate_lstm_model.h5'.")
+# Save LSTM Model
+lstm_model.save("climate_lstm_model.h5")
+print("Model training complete and saved as 'climate_lstm_model.h5' and 'climate_rnn_model.h5'.")
+
+# Prediction Function
+def predict_temperature(location, date):
+    date = pd.to_datetime(date)
+    encoded_location = LabelEncoder().fit_transform([location])[0]
+    input_data = np.array([[encoded_location, date.year, date.month, date.day]])
+    input_data = scaler.transform(input_data)
+    input_data = input_data.reshape((1, SEQ_LENGTH, input_data.shape[1]))
+    prediction = lstm_model.predict(input_data)
+    return scaler.inverse_transform(prediction.reshape(-1, 1))[0][0]
+
+print("Prediction function ready. Call predict_temperature(location, date) to get temperature forecasts.")
